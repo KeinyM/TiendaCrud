@@ -1,28 +1,48 @@
 name: Build and Analyze
+
 on:
   push:
     branches: [ main ]
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
+    name: Build and analyze
     runs-on: windows-latest
     steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+
       - name: Install SonarScanner
         run: dotnet tool install --global dotnet-sonarscanner
-      - name: Run Analysis
+
+      - name: Build and Analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet sonarscanner begin /k:"TiendaCrud" /o:"keinym" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml"
-          dotnet build --no-incremental
-          dotnet test --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
-          dotnet sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
+          # Iniciamos el escáner y configuramos la ruta del reporte de cobertura
+          dotnet sonarscanner begin /k:"TiendaCrud" /o:"keinym" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          
+          # Compilamos el proyecto
+          dotnet build --configuration Release
+          
+          # Ejecutamos los tests y generamos el reporte en formato OpenCover
+          dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage" /p:CoverletOutputFormat=opencover
+          
+          # Finalizamos el escáner para enviar los datos
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          

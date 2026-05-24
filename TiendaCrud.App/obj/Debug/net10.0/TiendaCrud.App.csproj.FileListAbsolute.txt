@@ -1,0 +1,14 @@
+C:\Users\User\TiendaCrud.App\bin\Debug\net10.0\TiendaCrud.App.exe
+C:\Users\User\TiendaCrud.App\bin\Debug\net10.0\TiendaCrud.App.deps.json
+C:\Users\User\TiendaCrud.App\bin\Debug\net10.0\TiendaCrud.App.runtimeconfig.json
+C:\Users\User\TiendaCrud.App\bin\Debug\net10.0\TiendaCrud.App.dll
+C:\Users\User\TiendaCrud.App\bin\Debug\net10.0\TiendaCrud.App.pdb
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\TiendaCrud.App.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\TiendaCrud.App.AssemblyInfoInputs.cache
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\TiendaCrud.App.AssemblyInfo.cs
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\TiendaCrud.App.csproj.CoreCompileInputs.cache
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\TiendaCrud.App.dll
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\refint\TiendaCrud.App.dll
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\TiendaCrud.App.pdb
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\TiendaCrud.App.genruntimeconfig.cache
+C:\Users\User\TiendaCrud.App\obj\Debug\net10.0\ref\TiendaCrud.App.dll

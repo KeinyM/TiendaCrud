@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "TiendaCrud.App/1.0.0": {
+        "runtime": {
+          "TiendaCrud.App.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TiendaCrud.App/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

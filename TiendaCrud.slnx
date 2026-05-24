@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TiendaCrud.App/TiendaCrud.App.csproj" />
+  <Project Path="TiendaCrud.Tests/TiendaCrud.Tests.csproj" />
+</Solution>

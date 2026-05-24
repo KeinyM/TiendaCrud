@@ -25,40 +25,22 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # Instalar herramientas necesarias
-      - name: Install tools
+      # Instalar SonarScanner
+      - name: Install SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      # Build + Tests + SonarCloud
+      - name: Build and Analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet tool install --global dotnet-sonarscanner
-          dotnet tool install --global coverlet.console
+          dotnet sonarscanner begin /k:"KeinyM_TiendaCrud" /o:"keinym" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
 
-      # Iniciar análisis SonarCloud
-      - name: Begin SonarCloud Analysis
-        run: >
-          dotnet sonarscanner begin
-          /k:"KeinyM_TiendaCrud"
-          /o:"keinym"
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-          /d:sonar.host.url="https://sonarcloud.io"
-          /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          dotnet restore
 
-      # Restaurar dependencias
-      - name: Restore dependencies
-        run: dotnet restore
+          dotnet build --no-restore
 
-      # Compilar proyecto
-      - name: Build Project
-        run: dotnet build --no-restore
+          dotnet test --collect:"XPlat Code Coverage"
 
-      # Ejecutar pruebas con cobertura
-      - name: Run Tests with Coverage
-        run: >
-          dotnet test
-          --collect:"XPlat Code Coverage"
-          --results-directory ./TestResults
-          /p:CoverletOutputFormat=opencover
-
-      # Finalizar análisis SonarCloud
-      - name: End SonarCloud Analysis
-        run: >
-          dotnet sonarscanner end
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

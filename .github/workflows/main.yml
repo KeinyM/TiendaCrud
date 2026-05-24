@@ -9,24 +9,29 @@ on:
 
 jobs:
   build:
-    name: Build and analyze
+    name: Build and Analyze
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # Clonar repositorio
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # Instalar .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
+      # Instalar herramientas necesarias
       - name: Install tools
         run: |
           dotnet tool install --global dotnet-sonarscanner
           dotnet tool install --global coverlet.console
 
+      # Iniciar análisis SonarCloud
       - name: Begin SonarCloud Analysis
         run: >
           dotnet sonarscanner begin
@@ -36,14 +41,24 @@ jobs:
           /d:sonar.host.url="https://sonarcloud.io"
           /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
 
-      - name: Build Project
-        run: dotnet build
+      # Restaurar dependencias
+      - name: Restore dependencies
+        run: dotnet restore
 
+      # Compilar proyecto
+      - name: Build Project
+        run: dotnet build --no-restore
+
+      # Ejecutar pruebas con cobertura
       - name: Run Tests with Coverage
         run: >
           dotnet test
           --collect:"XPlat Code Coverage"
-          --results-directory TestResults
+          --results-directory ./TestResults
+          /p:CoverletOutputFormat=opencover
 
+      # Finalizar análisis SonarCloud
       - name: End SonarCloud Analysis
-        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        run: >
+          dotnet sonarscanner end
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
